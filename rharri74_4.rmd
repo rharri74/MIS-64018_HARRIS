@@ -1,0 +1,34 @@
+---
+title: "MIS 64018 - Assignment 4"
+author: "Ryan Harris"
+date: "10/17/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Install and load library
+
+```{r}
+#install.packages("lpSolveAPI")
+library(lpSolveAPI)
+```
+
+Load the .lp file which was created in R by hand (no coding)
+
+```{r}
+x <- read.lp("rharri74_4.lp") # create an lp object x
+x                          # display x
+```
+
+Solve the lp model
+```{r}
+solve(x)
+get.objective(x)
+get.variables(x)
+get.constraints(x)
+```
