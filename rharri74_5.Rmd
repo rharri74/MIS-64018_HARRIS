@@ -1,0 +1,110 @@
+---
+title: "MIS 64018 - Assignment 5"
+author: "Ryan Harris"
+date: "10/31/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE)
+```
+
+Load libraries
+
+```{r}
+library(lpSolveAPI)
+library(Benchmarking)
+```
+
+
+Create Matrix
+
+```{r}
+x <- matrix(c(150,400,320,520,350,320,0.2,0.7,1.2,2.0,1.2,0.7),ncol = 2)
+y <- matrix(c(14000,14000,42000,28000,19000,14000,3500,21000,10500,42000,25000,15000),ncol = 2)
+colnames(y) <- c("reimbursed_patient-days","privately_paid_patient-days")
+colnames(x) <- c("staff_hours_per_day","supplies_per_day")
+x
+y
+```
+## DEA Assumptions {.tabset}
+
+### FDH
+```{r}
+e <- dea(x,y,RTS = "fdh")            # provide the input and output 
+eff(e)                               # display efficiencies
+peers(e)                             # identify the peers
+lambda(e)                            # identify the relative weights given to the peers
+```
+
+Free Disposability Hull shows all facilities as efficient.
+
+### CRS
+```{r}
+e <- dea(x,y,RTS = "crs")            # provide the input and output 
+eff(e)                               # display efficiencies
+peers(e)                             # identify the peers
+lambda(e)                            # identify the relative weights given to the peers
+```
+
+Constant Return to Scale (CRS) shows Facilities 1-4 as efficient. Facility 5 has a 97.8% efficiency and Facility 6 has an 86.8% efficiency. Both had Facilities 2 and 4 as peers. 
+
+### VRS
+```{r}
+e <- dea(x,y,RTS = "vrs")            # provide the input and output 
+eff(e)                               # display efficiencies
+peers(e)                             # identify the peers
+lambda(e)                            # identify the relative weights given to the peers
+```
+
+Varying Return to Scale (VRS) shows Facilities 1-5 as efficient. Facility 6 has a 89.6% efficiency with Facilities 2 and 5 as peers.
+
+### IRS
+```{r}
+e <- dea(x,y,RTS = "irs")            # provide the input and output 
+eff(e)                               # display efficiencies
+peers(e)                             # identify the peers
+lambda(e)                            # identify the relative weights given to the peers
+```
+
+Increasing Return to Scale (IRS) shows Facilities 1-5 as efficient. Facility 6 has a 89.6% efficiency with Facilities 2 and 5 as peers. This is the same result as VRS.
+
+### DRS
+```{r}
+e <- dea(x,y,RTS = "drs")            # provide the input and output 
+eff(e)                               # display efficiencies
+peers(e)                             # identify the peers
+lambda(e)                            # identify the relative weights given to the peers
+```
+
+Decreasing Return to Scale (DRS) shows Facilities 1-4 as efficient. Facility 5 has a 97.8% efficiency and Facility 6 has an 86.8% efficiency. Both had Facilities 2 and 4 as peers. This is the same result as CRS.
+
+### FRH
+```{r}
+e <- dea(x,y,RTS = "add")            # provide the input and output 
+eff(e)                               # display efficiencies
+peers(e)                             # identify the peers
+lambda(e)                            # identify the relative weights given to the peers
+```
+Free Replacibility Hull shows all facilities as efficient.
+
+## Compare and Contrast
+The results were showed three different results, in the following pairs:
+
+<ul>
+<li><b>FDH and FRH</b>
+<ul><li>All six facilities are efficient</li>
+</ul></li>
+<li><b>VRS and IRS</b>
+<ul><li>Facilities 1-5 are efficient</li>
+<li>Facility 6 has an 89.6% efficiency</li>
+<li>Facility 6 has Facilities 2 and 5 as peers</li>
+</ul></li>
+<li><b>DRS and CRS</b>
+<ul><li>Facilities 1-4 are efficient</li>
+<li>Facility 5 has an 97.8% efficiency and Facility 6 has an 86.8% efficiency</li>
+<li>Facilities 5 and 6 have Facilities 2 and 4 as peers</li>
+</ul></li>
+</ul>
