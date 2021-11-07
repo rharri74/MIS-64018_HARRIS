@@ -1,0 +1,56 @@
+---
+title: "MIS 64018 - Assignment 6"
+author: "Ryan Harris"
+date: "11/7/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load library
+
+```{r}
+library(lpSolveAPI)
+```
+
+Load the .lp file which was created in R by hand (no coding)
+
+```{r}
+x <- read.lp("rharri74_6.lp") # create an lp object x
+x                          # display x
+```
+
+Solve the lp model
+```{r}
+solve(x)
+```
+
+```{r}
+get.objective(x)
+```
+
+```{r}
+get.variables(x)
+```
+
+Question 2:
+
+x~1~: 0
+
+x~2~: 0
+
+x~3~: 0
+
+y~1~^+^: 50
+
+y~1~^-^: 0
+
+y~2~^-^: 75
+
+Question 3:
+
+The model above does not work because it suggests x~1~, x~2~, and x~3~ = 0. Thus it is showing the full penalty for both y~1~ and y~2~. This may be because I was unable to enter a constraint to maximize P. The example in the presentation showed constrains with bounds and I was unable to locate anything online or in the reading to specify how to enter the maximize function in R.
