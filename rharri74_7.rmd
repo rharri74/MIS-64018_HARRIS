@@ -1,0 +1,58 @@
+---
+title: "MIS 64018 - Assignment 7"
+author: "Ryan Harris"
+date: "11/21/2021"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Load library
+```{r}
+library(lpSolveAPI)
+```
+
+Create the lp model
+```{r}
+rn <- make.lp(0, 7) # number of constraints, number of decision variables
+lp.control(rn, sense="min", verbose = "neutral") # Default is minimization, so we need to do this for Minimization problems
+set.objfn(rn, c(775, 800, 800, 800, 800, 775, 750))
+set.type(rn,1:7,type="integer")
+add.constraint(rn, c(0, 1, 1, 1, 1, 1, 0), ">=", 18)
+add.constraint(rn, c(0, 0, 1, 1, 1, 1, 1), ">=", 27)
+add.constraint(rn, c(1, 0, 0, 1, 1, 1, 1), ">=", 22)
+add.constraint(rn, c(1, 1, 0, 0, 1, 1, 1), ">=", 26)
+add.constraint(rn, c(1, 1, 1, 0, 0, 1, 1), ">=", 25)
+add.constraint(rn, c(1, 1, 1, 1, 0, 0, 1), ">=", 21)
+add.constraint(rn, c(1, 1, 1, 1, 1, 0, 0), ">=", 19)
+RowNames <- c("Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday")
+ColNames <- c("Shift1", "Shift2", "Shift3", "Shift4", "Shift5", "Shift6", "Shift7")
+dimnames(rn) <- list(RowNames, ColNames)
+rn
+```
+
+Solve the lp model
+```{r}
+solve(rn)
+```
+Find Total Cost
+```{r}
+get.objective(rn)
+```
+Get Number of Workers Each Day
+```{r}
+get.variables(rn)
+```
+
+Based on above:  
+Sunday:    18  
+Monday:    27  
+Tuesday:   24  
+Wednesday: 28  
+Thursday:  25  
+Friday:    24  
+Saturday:  19
